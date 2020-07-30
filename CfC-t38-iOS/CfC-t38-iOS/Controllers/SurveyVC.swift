@@ -8,7 +8,11 @@
 
 import UIKit
 
+let questionCellReuseIdentifier = "QuestionCell"
+
 class SurveyVC: UIViewController {
+    
+    var survey: Survey!
 
     @IBOutlet weak var surveyTable: UITableView!
     
@@ -16,12 +20,20 @@ class SurveyVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        survey = ExampleData.aSurvey
 
+        surveyTable.register(UINib(nibName: "QuestionCell", bundle: nil), forCellReuseIdentifier: questionCellReuseIdentifier)
+        surveyTable.dataSource = self
+        surveyTable.delegate = self
+        surveyTable.reloadData()
+        
         surveyBtn.applyStyle()
     }
     
     @IBAction func sendSurvey(_ sender: UIButton) {
         print("send survey")
+        self.dismiss(animated: true, completion: nil)
     }
     
 
@@ -35,4 +47,28 @@ class SurveyVC: UIViewController {
     }
     */
 
+}
+
+// MARK: - UITableViewDataSource
+
+extension SurveyVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return survey.questions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: questionCellReuseIdentifier, for: indexPath) as! QuestionCell
+        let question = survey.questions[indexPath.row]
+        cell.question = question
+        cell.questionNumber.text = "\(indexPath.row + 1)"
+        cell.update()
+        return cell
+    }
+    
+}
+
+// MARK: - UITableViewDelegate
+
+extension SurveyVC: UITableViewDelegate {
+    
 }

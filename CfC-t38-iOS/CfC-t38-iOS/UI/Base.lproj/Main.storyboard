@@ -30,8 +30,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <segue destination="ohV-oS-L2u" kind="presentation" id="9YD-tF-SHB"/>
-                        <segue destination="Dcs-83-zq6" kind="presentation" id="6Z8-UW-dub"/>
+                        <segue destination="ohV-oS-L2u" kind="presentation" identifier="Status" id="9YD-tF-SHB"/>
+                        <segue destination="Dcs-83-zq6" kind="presentation" identifier="SignUp" id="6Z8-UW-dub"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -271,6 +271,7 @@
                         <outlet property="genderSC" destination="aaK-ta-bAX" id="7gF-RH-kmB"/>
                         <outlet property="policySwt" destination="60D-38-654" id="4du-lE-lV3"/>
                         <outlet property="signUpBtn" destination="qNT-yO-F6t" id="p7W-dV-CNw"/>
+                        <segue destination="ohV-oS-L2u" kind="presentation" identifier="Status" id="RCd-MS-b70"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C46-fs-ZQ5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -440,7 +441,7 @@
                         <outlet property="surveyBtn" destination="G0S-4W-9ky" id="Yvo-Xc-Un6"/>
                         <outlet property="testParagraph" destination="eMH-4x-s7g" id="c3E-JA-BzE"/>
                         <outlet property="updateStatusBtn" destination="MGi-Bu-S94" id="4mD-Al-GWE"/>
-                        <segue destination="Pej-5F-6HK" kind="presentation" id="jZY-e7-XSZ"/>
+                        <segue destination="Pej-5F-6HK" kind="presentation" identifier="Survey" id="jZY-e7-XSZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yMx-Yi-kWm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -525,4 +526,7 @@
     <resources>
         <image name="CompanyPlaceholder" width="132" height="105"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="RCd-MS-b70"/>
+    </inferredMetricsTieBreakers>
 </document>

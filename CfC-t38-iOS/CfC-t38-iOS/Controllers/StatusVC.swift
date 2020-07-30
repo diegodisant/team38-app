@@ -12,18 +12,20 @@ import QRCodeReader
 
 class StatusVC: UIViewController {
     
+    var user: User!
+    
     lazy var readerVC: QRCodeReaderViewController = {
         let builder = QRCodeReaderViewControllerBuilder {
             $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
-            
+
             // Configure the view controller (optional)
-            $0.showTorchButton        = false
+            $0.showTorchButton = false
             $0.showSwitchCameraButton = false
-            $0.showCancelButton       = false
-            $0.showOverlayView        = true
-            $0.rectOfInterest         = CGRect(x: 0.2, y: 0.2, width: 0.6, height: 0.6)
+            $0.showCancelButton = false
+            $0.showOverlayView = true
+            $0.rectOfInterest = CGRect(x: 0.2, y: 0.2, width: 0.6, height: 0.6)
         }
-        
+
         return QRCodeReaderViewController(builder: builder)
     }()
 
@@ -39,6 +41,9 @@ class StatusVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = ExampleData.aUser
+        
         statusIcon.alpha = 0
         surveyBtn.applyStyle()
         updateStatusBtn.applyStyle()
@@ -57,25 +62,46 @@ class StatusVC: UIViewController {
         statusIcon.alpha = 0
     }
     
+    func updateUIStatus() {
+        if user.isQuarantined {
+            uiStatusPositive()
+        } else {
+            uiStatusNegative()
+        }
+    }
+    
+    func uiStatusPositive() {
+        statusIcon.backgroundColor = Constants.Colors.statusRed
+        statusParagraph.text = Constants.StatusParagraph.positive
+        testParagraph.isHidden = true
+    }
+    
+    func uiStatusNegative() {
+        statusIcon.backgroundColor = Constants.Colors.statusGreen
+        statusParagraph.text = Constants.StatusParagraph.negative
+        testParagraph.isHidden = false
+    }
+    
     @IBAction func scanStoreCode(_ sender: UIBarButtonItem) {
         print("scan store code")
         // Retrieve the QRCode content
-         // By using the delegate pattern
-         readerVC.delegate = self
+        // By using the delegate pattern
+        readerVC.delegate = self
 
-         // Or by using the closure pattern
-         readerVC.completionBlock = { (result: QRCodeReaderResult?) in
+        // Or by using the closure pattern
+        readerVC.completionBlock = { (result: QRCodeReaderResult?) in
             print("qr value", result?.value ?? "None")
-         }
+        }
 
-         // Presents the readerVC as modal form sheet
-         readerVC.modalPresentationStyle = .formSheet
-        
-         present(readerVC, animated: true, completion: nil)
+        // Presents the readerVC as modal form sheet
+        readerVC.modalPresentationStyle = .formSheet
+
+        present(readerVC, animated: true, completion: nil)
     }
     
     @IBAction func takeSurvey(_ sender: UIButton) {
         print("take survey")
+        self.performSegue(withIdentifier: "Survey", sender: self)
     }
     
     @IBAction func updateStatus(_ sender: UIButton) {
@@ -99,9 +125,8 @@ class StatusVC: UIViewController {
 
 extension StatusVC: QRCodeReaderViewControllerDelegate {
     func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-      reader.stopScanning()
-
-      dismiss(animated: true, completion: nil)
+        reader.stopScanning()
+        dismiss(animated: true, completion: nil)
     }
 
     //This is an optional delegate method, that allows you to be notified when the user switches the cameraName
@@ -112,8 +137,7 @@ extension StatusVC: QRCodeReaderViewControllerDelegate {
     }
 
     func readerDidCancel(_ reader: QRCodeReaderViewController) {
-      reader.stopScanning()
-
-      dismiss(animated: true, completion: nil)
+        reader.stopScanning()
+        dismiss(animated: true, completion: nil)
     }
 }
