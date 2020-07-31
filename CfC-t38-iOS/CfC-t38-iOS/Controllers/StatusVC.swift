@@ -39,14 +39,22 @@ class StatusVC: UIViewController {
     
     @IBOutlet weak var updateStatusBtn: UIButton!
     
+    @IBOutlet weak var warningParagraph: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         user = ExampleData.aUser
+//        user = ExampleData.aUser2
         
         statusIcon.alpha = 0
         surveyBtn.applyStyle()
         updateStatusBtn.applyStyle()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateUIStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -73,13 +81,43 @@ class StatusVC: UIViewController {
     func uiStatusPositive() {
         statusIcon.backgroundColor = Constants.Colors.statusRed
         statusParagraph.text = Constants.StatusParagraph.positive
+        surveyBtn.isHidden = false
         testParagraph.isHidden = true
+        updateStatusBtn.isHidden = true
+        warningParagraph.isHidden = true
     }
     
     func uiStatusNegative() {
         statusIcon.backgroundColor = Constants.Colors.statusGreen
         statusParagraph.text = Constants.StatusParagraph.negative
+        surveyBtn.isHidden = true
         testParagraph.isHidden = false
+        updateStatusBtn.isHidden = false
+        warningParagraph.isHidden = false
+    }
+    
+    func showUpdateStatusDialog() {
+        let alertController: UIAlertController = UIAlertController(
+            title: "Advertencia",
+            message: "¿Está seguro/a?\nRecuerda que luego no podrás cambiar de parecer hasta que hayan transcurido 14 días o si te realizas una nueva prueba", preferredStyle: UIAlertController.Style.alert)
+        let okAction: UIAlertAction = UIAlertAction(
+            title: "Sí",
+            style: UIAlertAction.Style.default,
+            handler: { action in
+                // Yes action
+                print("Update yes")
+        })
+        let cancelAction: UIAlertAction = UIAlertAction(
+            title: "No",
+            style: UIAlertAction.Style.cancel,
+            handler: { action in
+                // No action
+                print("Update no")
+        })
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func scanStoreCode(_ sender: UIBarButtonItem) {
@@ -106,18 +144,8 @@ class StatusVC: UIViewController {
     
     @IBAction func updateStatus(_ sender: UIButton) {
         print("update status")
+        showUpdateStatusDialog()
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

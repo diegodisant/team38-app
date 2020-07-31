@@ -12,6 +12,7 @@ struct Constants {
     struct Colors {
         static let statusGreen = UIColor.init(red: 98/255, green: 156/255, blue: 68/255, alpha: 1.0)
         static let statusRed = UIColor.init(red: 255/255, green: 56/255, blue: 35/255, alpha: 1.0)
+        static let buttonRed = UIColor.init(red: 248/255, green: 95/255, blue: 106/255, alpha: 1.0)
     }
     struct StatusParagraph {
         static let positive = "Quiere decir que estás infectado, nosotros estaremos al pendiente de tu salud. Recuerda contestar nuestras preguntas diarias"

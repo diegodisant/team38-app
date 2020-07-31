@@ -10,6 +10,7 @@ import Foundation
 
 struct ExampleData {
     static let aUser = User(curp: "A1FC", birthdate: Date(), gender: .male, deviceId: "RRRR", isQuarantined: false)
+    static let aUser2 = User(curp: "A1FC", birthdate: Date(), gender: .male, deviceId: "RRRR", isQuarantined: true)
     static let someQuestions = [
         Question(sentence: "¿Te sientes mal?", answer: .undefined),
         Question(sentence: "¿Tienes fiebre?", answer: .undefined)

@@ -22,6 +22,9 @@ class QuestionCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.contentView.layer.cornerRadius = self.contentView.frame.width/30
+        self.yesBtn.layer.cornerRadius = self.yesBtn.frame.width/20
+        self.noBtn.layer.cornerRadius = self.noBtn.frame.width/20
     }
     
     func update() {
@@ -29,11 +32,11 @@ class QuestionCell: UITableViewCell {
         yesBtn.backgroundColor = .white
         noBtn.backgroundColor = .white
         if question.answer == .yes {
-            yesBtn.backgroundColor = UIColor.gray
+            yesBtn.backgroundColor = Constants.Colors.buttonRed
             noBtn.backgroundColor = UIColor.white
         } else if question.answer == .no {
             yesBtn.backgroundColor = UIColor.white
-            noBtn.backgroundColor = UIColor.gray
+            noBtn.backgroundColor = Constants.Colors.buttonRed
         } else {
             yesBtn.backgroundColor = UIColor.white
             noBtn.backgroundColor = UIColor.white

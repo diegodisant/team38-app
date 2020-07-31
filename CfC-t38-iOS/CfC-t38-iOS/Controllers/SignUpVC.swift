@@ -16,6 +16,8 @@ class SignUpVC: UIViewController {
     
     @IBOutlet weak var curpField: UITextField!
     
+    @IBOutlet weak var infectedSwt: UISwitch!
+    
     @IBOutlet weak var policySwt: UISwitch!
     
     @IBOutlet weak var signUpBtn: UIButton!
@@ -24,10 +26,15 @@ class SignUpVC: UIViewController {
         super.viewDidLoad()
 
         signUpBtn.applyStyle()
+        birthdateDP.datePickerMode = UIDatePicker.Mode.date
     }
     
     @IBAction func signUp(_ sender: UIButton) {
         print("sign up")
+        print("gender", genderSC.selectedSegmentIndex)
+        print("curpField", curpField.text ?? "")
+        print("infectedSwt", infectedSwt.isOn)
+        print("policySwt", policySwt.isOn)
         self.performSegue(withIdentifier: "Status", sender: self)
     }
     
