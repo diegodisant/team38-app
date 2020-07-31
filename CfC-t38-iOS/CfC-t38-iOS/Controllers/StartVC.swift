@@ -10,15 +10,21 @@ import UIKit
 
 class StartVC: UIViewController {
     
-    var signUp = false
+    var user: User?
+    var userRepo: UserRepository!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        userRepo = UserRepository()
+        user = try? userRepo.get()
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if signUp {
+        if user != nil {
             self.performSegue(withIdentifier: "Status", sender: self)
         } else {
             self.performSegue(withIdentifier: "SignUp", sender: self)
-            signUp = true
         }
     }
     

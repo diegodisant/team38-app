@@ -8,11 +8,19 @@
 
 import UIKit
 
+protocol SurveyDelegate {
+    func wasAnswered(_ answered: Bool)
+}
+
 let questionCellReuseIdentifier = "QuestionCell"
 
 class SurveyVC: UIViewController {
     
     var survey: Survey!
+    
+    var surveyRepo: SurveyRepository!
+    
+    var delegate: SurveyDelegate?
 
     @IBOutlet weak var surveyTable: UITableView!
     
@@ -21,7 +29,12 @@ class SurveyVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        survey = ExampleData.aSurvey
+        surveyRepo = SurveyRepository()
+        do {
+            survey = try surveyRepo.get()
+        } catch {
+            Popup.showPopupMessage(vc: self, title: "Error", message: "No se pudo obtener la encuesta")
+        }
 
         surveyTable.register(UINib(nibName: "QuestionCell", bundle: nil), forCellReuseIdentifier: questionCellReuseIdentifier)
         surveyTable.dataSource = self
@@ -32,20 +45,32 @@ class SurveyVC: UIViewController {
     }
     
     @IBAction func sendSurvey(_ sender: UIButton) {
-        print("send survey")
-        self.dismiss(animated: true, completion: nil)
+        if validateInputs() {
+            do {
+                self.survey.answered = true
+                try surveyRepo.set(survey: self.survey)
+                delegate?.wasAnswered(true)
+                self.dismiss(animated: true, completion: nil)
+            } catch {
+                Popup.showPopupMessage(vc: self, title: "Error", message: "No se pudo enviar la encuesta")
+                self.survey.answered = false
+            }
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func validateInputs() -> Bool {
+        guard let questions = survey.questions else {
+            Popup.showPopupMessage(vc: self, title: "Aviso", message: "No existen preguntas para contestar")
+            return false
+        }
+        for question in questions {
+            if question.answer! == .undefined {
+                Popup.showPopupMessage(vc: self, title: "Aviso", message: "Debes contestar todas las preguntas")
+                return false
+            }
+        }
+        return true
     }
-    */
 
 }
 

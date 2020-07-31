@@ -14,6 +14,10 @@ class StatusVC: UIViewController {
     
     var user: User!
     
+    var userRepo: UserRepository!
+    
+    var surveyRepo: SurveyRepository!
+    
     lazy var readerVC: QRCodeReaderViewController = {
         let builder = QRCodeReaderViewControllerBuilder {
             $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
@@ -44,8 +48,14 @@ class StatusVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        user = ExampleData.aUser
-//        user = ExampleData.aUser2
+        userRepo = UserRepository()
+        surveyRepo = SurveyRepository()
+        do {
+            user = try userRepo.get()
+        } catch {
+            Popup.showPopupMessage(vc: self, title: "Error", message: "Usuario no registrado")
+            return
+        }
         
         statusIcon.alpha = 0
         surveyBtn.applyStyle()
@@ -70,58 +80,7 @@ class StatusVC: UIViewController {
         statusIcon.alpha = 0
     }
     
-    func updateUIStatus() {
-        if user.isQuarantined ?? false {
-            uiStatusPositive()
-        } else {
-            uiStatusNegative()
-        }
-    }
-    
-    func uiStatusPositive() {
-        statusIcon.backgroundColor = Constants.Colors.statusRed
-        statusParagraph.text = Constants.StatusParagraph.positive
-        surveyBtn.isHidden = false
-        testParagraph.isHidden = true
-        updateStatusBtn.isHidden = true
-        warningParagraph.isHidden = true
-    }
-    
-    func uiStatusNegative() {
-        statusIcon.backgroundColor = Constants.Colors.statusGreen
-        statusParagraph.text = Constants.StatusParagraph.negative
-        surveyBtn.isHidden = true
-        testParagraph.isHidden = false
-        updateStatusBtn.isHidden = false
-        warningParagraph.isHidden = false
-    }
-    
-    func showUpdateStatusDialog() {
-        let alertController: UIAlertController = UIAlertController(
-            title: "Advertencia",
-            message: "¿Está seguro/a?\nRecuerda que luego no podrás cambiar de parecer hasta que hayan transcurido 14 días o si te realizas una nueva prueba", preferredStyle: UIAlertController.Style.alert)
-        let okAction: UIAlertAction = UIAlertAction(
-            title: "Sí",
-            style: UIAlertAction.Style.default,
-            handler: { action in
-                // Yes action
-                print("Update yes")
-        })
-        let cancelAction: UIAlertAction = UIAlertAction(
-            title: "No",
-            style: UIAlertAction.Style.cancel,
-            handler: { action in
-                // No action
-                print("Update no")
-        })
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
     @IBAction func scanStoreCode(_ sender: UIBarButtonItem) {
-        print("scan store code")
         // Retrieve the QRCode content
         // By using the delegate pattern
         readerVC.delegate = self
@@ -138,13 +97,59 @@ class StatusVC: UIViewController {
     }
     
     @IBAction func takeSurvey(_ sender: UIButton) {
-        print("take survey")
         self.performSegue(withIdentifier: "Survey", sender: self)
     }
     
     @IBAction func updateStatus(_ sender: UIButton) {
-        print("update status")
-        showUpdateStatusDialog()
+        Popup.showUpdateStatusDialog(vc: self, completionOk: {
+            do {
+                self.user.isQuarantined = true
+                try self.userRepo.set(user: self.user)
+                // MARK: TODO
+                try self.surveyRepo.set(survey: ExampleData.aSurvey)
+            } catch {
+                Popup.showPopupMessage(vc: self, title: "Error", message: "No se pudo cambiar estado")
+                self.user.isQuarantined = false
+            }
+            self.updateUIStatus()
+        }, completionCancel: nil)
+    }
+    
+    func updateUIStatus() {
+        if user.isQuarantined ?? false {
+            uiStatusPositive()
+        } else {
+            uiStatusNegative()
+        }
+    }
+    
+    func uiStatusPositive() {
+        statusIcon.backgroundColor = Constants.Colors.statusRed
+        statusParagraph.text = Constants.StatusParagraph.positive
+        let survey = try? surveyRepo.get()
+        if survey != nil && !(survey!.answered ?? false) {
+            surveyBtn.isHidden = false
+        }
+        testParagraph.isHidden = true
+        updateStatusBtn.isHidden = true
+        warningParagraph.isHidden = true
+    }
+    
+    func uiStatusNegative() {
+        statusIcon.backgroundColor = Constants.Colors.statusGreen
+        statusParagraph.text = Constants.StatusParagraph.negative
+        surveyBtn.isHidden = true
+        testParagraph.isHidden = false
+        updateStatusBtn.isHidden = false
+        warningParagraph.isHidden = false
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Survey" {
+            (segue.destination as! SurveyVC).delegate = self
+        }
     }
 
 }
@@ -154,6 +159,7 @@ class StatusVC: UIViewController {
 extension StatusVC: QRCodeReaderViewControllerDelegate {
     func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
         reader.stopScanning()
+        Popup.showPopupMessage(vc: self, title: "Estás entrando en", message: result.value)
         dismiss(animated: true, completion: nil)
     }
 
@@ -167,5 +173,15 @@ extension StatusVC: QRCodeReaderViewControllerDelegate {
     func readerDidCancel(_ reader: QRCodeReaderViewController) {
         reader.stopScanning()
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - Survey Delegate
+
+extension StatusVC: SurveyDelegate {
+    func wasAnswered(_ answered: Bool) {
+        if answered {
+            surveyBtn.isHidden = true
+        }
     }
 }

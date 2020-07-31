@@ -32,6 +32,7 @@
 		14AE9A4324D483EE0023F368 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AE9A4224D483EE0023F368 /* UserRepository.swift */; };
 		14AE9A4524D484090023F368 /* SurveyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AE9A4424D484090023F368 /* SurveyRepository.swift */; };
 		14AE9A4724D484410023F368 /* ExposuresRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AE9A4624D484410023F368 /* ExposuresRepository.swift */; };
+		14AE9A4924D4A9070023F368 /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AE9A4824D4A9070023F368 /* Popup.swift */; };
 		6BF159879EC5EFD34656D8C3 /* Pods_CfC_t38_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11394E28FB91F2D3DF6D5598 /* Pods_CfC_t38_iOS.framework */; };
 		7CAA040FF42B50C87AD247FF /* Pods_CfC_t38_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC3FD3C9D7F821A048A3C44 /* Pods_CfC_t38_iOSTests.framework */; };
 		9B2330B298D604BAFEAA811B /* Pods_CfC_t38_iOS_CfC_t38_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D160F3C97BEC2C34C2165C2 /* Pods_CfC_t38_iOS_CfC_t38_iOSUITests.framework */; };
@@ -87,6 +88,7 @@
 		14AE9A4224D483EE0023F368 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		14AE9A4424D484090023F368 /* SurveyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyRepository.swift; sourceTree = "<group>"; };
 		14AE9A4624D484410023F368 /* ExposuresRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposuresRepository.swift; sourceTree = "<group>"; };
+		14AE9A4824D4A9070023F368 /* Popup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 		42B6E8709BE835992A5E64B4 /* Pods-CfC-t38-iOS-CfC-t38-iOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CfC-t38-iOS-CfC-t38-iOSUITests.release.xcconfig"; path = "Target Support Files/Pods-CfC-t38-iOS-CfC-t38-iOSUITests/Pods-CfC-t38-iOS-CfC-t38-iOSUITests.release.xcconfig"; sourceTree = "<group>"; };
 		5CC3FD3C9D7F821A048A3C44 /* Pods_CfC_t38_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CfC_t38_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D6B7F66023280C636B4111 /* Pods-CfC-t38-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CfC-t38-iOS.debug.xcconfig"; path = "Target Support Files/Pods-CfC-t38-iOS/Pods-CfC-t38-iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				1426B4F324D3559400896151 /* Survey */,
 				1426B4A124D2F0D300896151 /* Main.storyboard */,
 				1426B4A624D2F0D500896151 /* LaunchScreen.storyboard */,
+				14AE9A4824D4A9070023F368 /* Popup.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 			files = (
 				1426B4EC24D351DA00896151 /* LastExposures.swift in Sources */,
 				1426B49C24D2F0D300896151 /* AppDelegate.swift in Sources */,
+				14AE9A4924D4A9070023F368 /* Popup.swift in Sources */,
 				1426B49E24D2F0D300896151 /* SceneDelegate.swift in Sources */,
 				14AE9A4024D4809C0023F368 /* PersistenceManager.swift in Sources */,
 				14AE9A4724D484410023F368 /* ExposuresRepository.swift in Sources */,
