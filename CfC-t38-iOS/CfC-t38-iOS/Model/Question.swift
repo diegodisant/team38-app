@@ -14,7 +14,22 @@ enum Answer: String {
     case undefined = "undefined"
 }
 
-struct Question {
-    var sentence: String
-    var answer: Answer
+class Question: NSObject, NSCoding {
+    var sentence: String?
+    var answer: Answer?
+    
+    init(sentence: String, answer: Answer) {
+        self.sentence = sentence
+        self.answer = answer
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.sentence = aDecoder.decodeObject(forKey: "sentence") as? String
+        self.answer = Answer(rawValue: aDecoder.decodeObject(forKey: "answer") as? String ?? "undefined")
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.sentence, forKey: "sentence")
+        aCoder.encode((self.answer ?? .undefined).rawValue, forKey: "answer")
+    }
 }

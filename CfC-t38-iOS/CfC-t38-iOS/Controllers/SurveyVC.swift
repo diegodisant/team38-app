@@ -53,12 +53,15 @@ class SurveyVC: UIViewController {
 
 extension SurveyVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return survey.questions.count
+        return survey.questions?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: questionCellReuseIdentifier, for: indexPath) as! QuestionCell
-        let question = survey.questions[indexPath.row]
+        guard let questions = survey.questions else {
+            return cell
+        }
+        let question = questions[indexPath.row]
         cell.question = question
         cell.questionNumber.text = "\(indexPath.row + 1)"
         cell.update()

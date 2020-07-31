@@ -71,7 +71,7 @@ class StatusVC: UIViewController {
     }
     
     func updateUIStatus() {
-        if user.isQuarantined {
+        if user.isQuarantined ?? false {
             uiStatusPositive()
         } else {
             uiStatusNegative()

@@ -9,8 +9,8 @@
 import Foundation
 
 struct ExampleData {
-    static let aUser = User(curp: "A1FC", birthdate: Date(), gender: .male, deviceId: "RRRR", isQuarantined: false)
-    static let aUser2 = User(curp: "A1FC", birthdate: Date(), gender: .male, deviceId: "RRRR", isQuarantined: true)
+    static let aUser = User(id: "UserId1", curp: "A1FC", birthdate: Date(), gender: .male, deviceId: "RRRR", isQuarantined: false)
+    static let aUser2 = User(id: "UserId2", curp: "A1FC", birthdate: Date(), gender: .female, deviceId: "RRRR", isQuarantined: true)
     static let someQuestions = [
         Question(sentence: "¿Te sientes mal?", answer: .undefined),
         Question(sentence: "¿Tienes fiebre?", answer: .undefined)
